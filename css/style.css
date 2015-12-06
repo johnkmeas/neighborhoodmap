@@ -1,0 +1,16 @@
+#map {
+	float: right;
+	width: 70vw;
+	height: 100vh;
+}
+
+
+.sidebar {
+	float: left;
+	padding: 10px;
+}
+
+
+li {
+ 	list-style-type: none;
+}
