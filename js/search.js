@@ -4,8 +4,8 @@ ko.utils.stringStartsWith = function(string, startsWith) {
     return string.substring(0, startsWith.length) === startsWith;
 };
 
-var Record = function(id, name) {
-    this.id = id;
+var Record = function( name) {
+    //this.id = id;
     this.name = name;
     //this.homeTown = homeTown;
 };
@@ -15,7 +15,7 @@ var ViewModel = function(records) {
     //self.homeTowns = ko.observableArray(homeTowns);
     self.records = ko.observableArray(
     ko.utils.arrayMap(records, function(i) {
-        return new Record(i.id, i.name);
+        return new Record(i.name);
     }));
 
     //self.idSearch = ko.observable('');
@@ -25,12 +25,11 @@ var ViewModel = function(records) {
     self.filteredRecords = ko.computed(function() {
         return ko.utils.arrayFilter(self.records(), function(r) {
             return (self.nameSearch().length == 0 || ko.utils.stringStartsWith(r.name.toLowerCase(), self.nameSearch().toLowerCase())) 
-
         });
     });
 };
 
-var homeTowns = ["Portland", "Seattle"];
+
 
 var data = [
 {
@@ -60,4 +59,4 @@ var data = [
     place: {lat: 49.030394, lng: -122.669163}},
      ];
 
-ko.applyBindings(new ViewModel(data, homeTowns));
+ko.applyBindings(new ViewModel(data));

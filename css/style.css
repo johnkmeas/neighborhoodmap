@@ -1,16 +1,31 @@
+.heading {
+	padding: 20px;
+}
+
+h2{
+	text-align: 
+}
+
 #map {
 	float: right;
-	width: 70vw;
+	width: 65vw;
 	height: 100vh;
 }
 
 
 .sidebar {
+	width: 25vw;
 	float: left;
 	padding: 10px;
+	background-color: pink;
 }
 
-
+.newsfeed{
+	float: left;
+	width: 100%;
+	height: 50vh;
+	background-color: aquamarine;
+}
 li {
  	list-style-type: none;
 }
