@@ -1,31 +1,242 @@
-.heading {
-	padding: 20px;
-}
-
-h2{
-	text-align: 
-}
 
 #map {
+	border-radius: 10px;
 	float: right;
-	width: 65vw;
+	width: 70vw;
 	height: 100vh;
 }
-
+a {
+	color: white;
+}
+a:focus, a:hover {
+    color: #00FFF3;
+    text-decoration: none;
+}
 
 .sidebar {
-	width: 25vw;
-	float: left;
-	padding: 10px;
-	background-color: pink;
+	
+	width: 30vw;
+
+	
+	background-color: #447100;
 }
 
 .newsfeed{
-	float: left;
+	
+	padding: 20px;
 	width: 100%;
 	height: 50vh;
-	background-color: aquamarine;
+	background-color:;
 }
+
 li {
  	list-style-type: none;
+ 	padding: 6px 2px;
+ 	
 }
+.quote {
+	border-radius: 10px;
+	padding: 20px;
+	background-color: #E7C528;
+}
+
+#wikipedia-links li {
+ 	list-style-type: none;
+ 	padding: 6px 2px;
+ 	background-color: #E0E0E0;
+}
+
+
+body {
+  padding-top: 51px;  
+}
+.text-center {
+  padding-top: 20px;
+}
+.col-xs-12 {
+  background-color: #fff;
+}
+#sidebar {
+  height: 100%;
+  padding-right: 0;
+  padding-top: 20px;
+}
+#sidebar .nav {
+  width: 95%;
+}
+#sidebar li {
+  border:0 #f2f2f2 solid;
+  border-bottom-width:1px;
+}
+
+.navbar-default .navbar-brand {
+	float: right;
+    color: #777;
+	font-size: 1em;
+	color: orange;
+}
+
+.navbar-brand, p {
+	float: clear;
+    color: #777;
+    padding-left: 16px;
+	font-size: 1em;
+	color: orange;
+} 
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: orange;
+}
+.navbar-header {
+	background-color: #447100;
+}
+/* collapsed sidebar styles */
+@media screen and (max-width: 480px) {
+	body {
+		background: pink;
+	}
+	#map {
+		width: 100vw;
+	}
+
+	.sidebar {
+		margin-top: 15%;
+		width: 40vw;
+	}
+
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+  }
+  .row-offcanvas-right
+  .sidebar-offcanvas {
+    right: -41.6%;
+  }
+
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -41.6%;
+  }
+  .row-offcanvas-right.active {
+    right: 41.6%;
+  }
+  .row-offcanvas-left.active {
+    left: 41.6%;
+  }
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 41.6%;
+  }
+  #sidebar {
+    padding-top:0;
+  }
+}
+@media (min-width: 481px){
+	.navbar-toggle {
+		visibility: hidden;
+	}
+}
+@media (min-width: 481px) and (max-width: 600px){
+	
+	#map {
+		width: 60vw;
+	}
+
+	.sidebar {
+		width: 37vw;
+	}
+
+	 body {
+	 	background: aqua;
+	 }
+}
+
+@media (min-width: 601px) and (max-width: 760px){
+	#map {
+		width: 60vw;
+	}
+
+	.sidebar {
+		width: 30vw;
+	}
+
+	 body {
+	 	background: blue;
+	 }
+}
+@media (min-width: 761px){
+	.sidebar {
+		margin-top: 4%;
+	
+	}
+}
+@media (min-width: 761px){
+	#map { 
+		margin-top: 4%;
+	}
+}
+
+@media (min-width: 761px) and (max-width: 820px){
+
+	#map {
+		width: 60vw;
+	}
+
+	.sidebar {
+	
+		width: 30vw;
+	}
+
+	 body {
+	 	background: orange;
+	 }
+}
+
+@media (min-width: 821px) and (max-width: 880px) {
+	
+	#map {
+		width: 60vw;
+	}
+
+	.sidebar {
+		width: 25vw;
+	}
+
+	 body {
+	 	background: turquoise;
+	 }
+}
+
+@media (min-width: 881px) and (max-width: 990px) {
+	
+	#map {
+		width: 56vw;
+	}
+
+	.sidebar {
+		width: 20vw;
+	}
+
+	 body {
+	 	background: #00FF15;
+	 }
+}
+
+@media (min-width: 990px){
+
+	#map {
+		width: 60vw;
+	}
+
+	.sidebar {
+		width: 20vw;
+	}
+
+	 body {
+	 	background: #FD00FF;
+	 }
+}
+
