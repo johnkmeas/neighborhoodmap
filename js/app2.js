@@ -1,126 +1,171 @@
+var locationData = [
+  {
+    locationName: 'Tynehead Regional Park',
+    latLng: {lat: 49.181365, lng: -122.757452},
+    lat: 49.181365, lng: -122.757452
+  },
 
-var map;
-var marker;
-/*    var viewModel = [
-        'tynehead' : ko.observableArray([{name: "tynehead", place: {lat: 49.181365, lng: -122.757452},
-    content: 'hello'}]),
-        greenTimbers : ko.observableArray([{name: "greenTimbers", place: {lat: 49.179204, lng: -122.821221},
-    content: 'my'}]),
-        capilano : ko.observableArray([{name: "capilano", place: {lat: 49.352239, lng: -123.114227},
-    content: 'name'}]),
-        burnaby : ko.observableArray([{name: "burnaby", place: {lat: 49.194429, lng: -122.999024},
-    content: 'is'}]),
-        campbell : ko.observableArray([{name: "campbell", place: {lat: 49.030394, lng: -122.669163},
-    content: 'John'}])
-    ];*/
- /*    var viewModel = [
-  {name: "tynehead", place: {lat: 49.181365, lng: -122.757452},
-    content: 'hello'},
-  {name: "greenTimbers", place: {lat: 49.179204, lng: -122.821221},
-    content: 'my'},
-  {name: "capilano", place: {lat: 49.352239, lng: -123.114227},
-    content: 'name'},
-  {name: "burnaby", place: {lat: 49.194429, lng: -122.999024},
-    content: 'is'},
-  {name: "campbell", place: {lat: 49.030394, lng: -122.669163},
-    content: 'John'}
-  ];
-*/
-   var parks = [
-  {name: "tynehead", place: {lat: 49.181365, lng: -122.757452},
-    content: 'hello'},
-  {name: "greenTimbers", place: {lat: 49.179204, lng: -122.821221},
-    content: 'my'},
-  {name: "capilano", place: {lat: 49.352239, lng: -123.114227},
-    content: 'name'},
-  {name: "burnaby", place: {lat: 49.194429, lng: -122.999024},
-    content: 'is'},
-  {name: "campbell", place: {lat: 49.030394, lng: -122.669163},
-    content: 'John'}
-  ];
-  
-function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 49.179282, lng: -122.820615},
-    zoom: 10
-  });
+  {
+    locationName: 'Green Timbers Lake',
+    latLng: {lat: 49.179204, lng: -122.821221},
+    lat: 49.179204, lng: -122.821221
+  },
 
-  //marker  -122.757452, 49.181154, -122.757398, 49.179204, -122.821221, 49.352239, -123.114227, 49.194429, -122.999024, 49.030394, -122.669163
-  var myLatLng = parks[0].place;
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 10,
-    center: myLatLng
-  });
-  var contentString = 'hello john';
+  {
+    locationName: 'Capilano River Regional Park',
+    latLng: {lat: 49.352239, lng: -123.114227},
+    lat: 49.352239, lng: -123.114227
+  },
 
-  var infowindow = new google.maps.InfoWindow({
-    content: contentString
-  });
-
-  function markers() {
-    for(var i = 0; i < 5; i++){
-      var place = parks[i].place;
-      var drop = google.maps.Animation.DROP;
-      var name = parks[i].name; 
-      marker = new google.maps.Marker({
-        position: place,
-        map: map,
-        animation: drop,
-        title: name
-      });
-    // clickresponse(marker, parks[i].name);
-
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        return function() {
-          infowindow.setContent(parks[i].name);
-          infowindow.open(map, marker);
-        
-        }
-      })(marker, i));
-    }};
-  markers();
-
-/*  function clickresponse(marker, content) {
-    var infowindow = new google.maps.InfoWindow({
-      content: content
-    });
-
-    marker.addListener('click', function() {
-      infowindow.open(marker.get('map'), marker);
-      toggleBounce();
-
-    });
-  } */
-
-  function toggleBounce() {
-    if (marker.getAnimation() !== null) {
-      marker.setAnimation(null);
-    } else {
-      marker.setAnimation(google.maps.Animation.BOUNCE);
-    }
+  {
+    locationName: 'Burnaby Fraser Foreshore Park',
+    latLng: {lat: 49.194429, lng: -122.999024},
+    lat: 49.194429, lng: -122.999024
+  },
+  {
+    locationName: 'Campbell Valley Regional Park',
+    latLng: {lat: 49.030394, lng: -122.669163},
+    lat: 49.030394, lng: -122.669163
   }
-}//end initMap
-    function AppViewModel() {
 
+];
 
-      this.parks = ko.observableArray(parks);
-      this.show = ko.observable(true);
+var KoViewModel = function() {
+  var self = this;
 
-      function filtersearch(){
-        $('.search').keyup(function () {
-          var valThis = this.value.toLowerCase(),
-          lenght  = this.value.length;
+  // Create a google map with id, center position and zoom level
+  self.googleMap = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: locationData[3].lat, lng: locationData[3].lng},
+    zoom: 9
+  });
 
-          $('.list>li').each(function () {
-            var text  = $(this).text(),
-            textL = text.toLowerCase(),
-            htmlR = '<b>' + text.substr(0, lenght) + '</b>' + text.substr(lenght);
-            (textL.indexOf(valThis) == 0) ? $(this).html(htmlR).show() : $(this).hide();
-          });
+  // An empty array to store a Place.
+  self.allPlaces = [];
 
-        });
+  // For each object in locationData
+  locationData.forEach(function(place) {
+    self.allPlaces.push(new Place(place));
+  });
+
+  // Some variables to be used for the Foursuare api
+  var latlng = '',
+    client_id = 'K1GIWTMS14PAA20PHUZXAFQMGJRIXM0FYTXUIC3AEEEF3QXT',
+    client_secret = 'GB3U3CIDFVZRDOFR1SU5AY3KYYYLAGC2WI1QMUZNS5AU0PEU',
+    fUrl = 'https://api.foursquare.com/v2/venues/search?ll='+ latlng +'&client_id='+ client_id +'&client_secret='+ client_secret +'&v=20151259&m=foursquare&links',
+    fquery = 'coffee',
+    infowindow = new google.maps.InfoWindow();
+
+  // For each object in allPlace create map markers
+  // and create content for each infowindow with
+  // the data recieved from foursquare.
+  self.allPlaces.forEach(function(place, i) {
+    var drop = google.maps.Animation.DROP,
+      markerOptions = {
+      map: self.googleMap,
+      position: place.latLng
+    },
+    lat = place.lat,
+    lng = place.lng;
+
+    var contentin = '';
+
+    // Sends a request to foursquare api
+    $.getJSON('https://api.foursquare.com/v2/venues/search?ll='+ lat+','+lng +'&query='+ fquery +'&limit=1&client_id='+ client_id +'&client_secret='+ client_secret +'&v=20151259&m=foursquare',
+
+    // This function takes the foursquare data and processes it.
+    function(data) {
+      $.each(data.response.venues, function(i,venues){
+        if(venues.name.length == 0){
+          content = '<p>' + 'Error loading foursquare' + '</p>';
+        } else {
+          content = '</h5><br><p><sup>nearest coffee spot</sup></p><br>' +
+          '<h5>'+ venues.name + '</h5>' +
+          '<p>'+ venues.location.formattedAddress[0] +'<br>'
+          + venues.location.formattedAddress[1] +'</p>';
+          contentin = content;
+        }
+      });
+    });
+
+    var contentName = '<h4>'+locationData[i].locationName+'</h4><br>';
+    place.marker = new google.maps.Marker(markerOptions);
+    var marker = place.marker;
+    var poweredBy = '<img class="powered" src="img/powered.png">';
+
+    // This adds an Listener for a click function to the marker.
+    // It returns an infowindow with content we create for each marker,
+    // and the marker will bounce when clicked
+    google.maps.event.addListener(marker, 'click', (function(marker) {
+      return function() {
+        infowindow.setContent(contentName + contentin + poweredBy);
+        infowindow.open(self.googleMap, marker);
+        // Animation
+        if (marker.getAnimation() !== null) {
+            marker.setAnimation(null);
+          } else {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+          }
+          setTimeout(function(){ marker.setAnimation(null); }, 800);
       }
-      filtersearch();
-    };
-ko.applyBindings(new AppViewModel());
+    })(marker));
+  });
 
+  // The click function triggers map markers
+  // and clicks the toggle that shows the
+  // list itemsd.
+  clicker = function(){
+    google.maps.event.trigger(this.marker, 'click');
+    $('.toggle').trigger('click');
+  };
+
+  // Toggle visibility of list view in mobile view
+  self.Show = ko.observable(false);
+  self.toggleVisibility = function() {
+    self.Show(!self.Show());
+  };
+  self.Show = ko.observable(true);
+
+  //This is where the visible markers will be stored
+  self.visiblePlaces = ko.observableArray();
+
+  // All markers will start out visible
+  self.allPlaces.forEach(function(place) {
+    self.visiblePlaces.push(place);
+  });
+
+  // This binds to the userInput and keeps track of its contents
+  // and is accessed by the filter.
+  self.userInput = ko.observable('');
+
+  // This is the filter function for the Markers.
+  // It takes the user input and if it matches
+  // part of any name, then that name's content will be visible,
+  // Otherwise it will be hidden.
+  self.filterMarkers = function() {
+    var searchInput = self.userInput().toLowerCase();
+    self.visiblePlaces.removeAll();
+
+    self.allPlaces.forEach(function(place) {
+
+      place.marker.setVisible(false);
+      if (place.locationName.toLowerCase().indexOf(searchInput) !== -1) {
+        self.visiblePlaces.push(place);
+      }
+    });
+
+    self.visiblePlaces().forEach(function(place) {
+      place.marker.setVisible(true);
+    });
+  };
+
+  //This creates object Place with data
+  function Place(dataObj) {
+    this.locationName = dataObj.locationName;
+    this.latLng = dataObj.latLng;
+    this.lat = dataObj.lat;
+    this.lng = dataObj.lng;
+    this.marker = null;
+  }
+};
+
+ko.applyBindings(new KoViewModel());

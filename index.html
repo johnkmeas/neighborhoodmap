@@ -1,73 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Document</title>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scaleable=no">
-	<link href="//normalize-css.googlecode.com/svn/trunk/normalize.css">
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" property="stylesheet">
-	<link rel="stylesheet" href="css/style.css">
+  <title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scaleable=no">
+  <link href="//normalize-css.googlecode.com/svn/trunk/normalize.css" property="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" property="stylesheet">
+  <link rel="stylesheet" href="css/search.css">
 </head>
 <body>
-<div class="page-container">
-  
-  <!-- top navbar -->
-  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Places to walk the dog!</a>
-        <span><p>Search: <input data-bind="value: nameSearch, valueUpdate: 'afterkeydown'" /></p></span>
-        
-      </div>
+  <div class='container'>   
+    <div class="butt">
+      <a href="#" class="toggle" data-bind="click: toggleVisibility">Click for Top 5</a>
+      <h3 class="titletext">Places to walk the dog</h3>
+      <br/>
+    </div>
+    <div class="Show" data-bind="visible: Show">
+      <ul id="list-view" data-bind="foreach: visiblePlaces">
+        <li><a data-bind="text: locationName, click: clicker"></a></li>
+      </ul>
     </div>
   </div>
-      
-  <div class="container">
-    <div class="row row-offcanvas row-offcanvas-left">
-     
-      <!-- sidebar -->
-      <div class="col-xs-6 col-sm-3 sidebar sidebar-offcanvas" id="sidebar" role="navigation">
-        
-      	
-			    <p>Top 5 places to walk</p>
-			    <ul class="list" data-bind="foreach: parks">
-			      <li><a data-bind="text: $data.name, click: clicker"> 
-			      </a></li>
-			    </ul>
-			    <div class="newsfeed">
-			    	<h4 class= "quote">Don't forget poo bags!</h4>
-			      
-			      <div class="wikipedia-container">
-			        <h3 id="wikipedia-header">Relevant Wikipedia Links</h3>
-			         	<ul id="wikipedia-links">Type in an address above and find relevant Wikipedia articles here!</ul>
-			      </div>
-
-			    </div>
- 				
-      </div>
-    
-        <!-- main area -->
-      <div id="map"class="col-xs-12 col-sm-9">
-      
-      </div><!-- /.col-xs-12 main -->
-    </div><!--/.row-->
-
-  </div><!--/.container-->
-</div><!--/.page-container-->	
-
-	<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script src="js/app.js"></script>
+    <input type="search" placeholder="keyword search..." data-bind="textInput: userInput, event: {keyup: filterMarkers}">
+  <div id="map"></div>
+  
+  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js">
-	</script>
-    
-	<script src="js/knockout.js"></script>
-	<script src="js/app.js"></script>
+    </script>
+  <script src="js/knockout.js"></script>
+  <script src="js/app2.js"></script>
 </body>
 </html>

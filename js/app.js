@@ -1,189 +1,189 @@
-// I've declared the global variables above everything
-var map, markerd,
-  viewModel = {
-    park : [
-      {name: "Tynehead Regional Park", place: {lat: 49.181365, lng: -122.757452},
-        content: 'tynehead'},
-      {name: "Green Timbers Lake", place: {lat: 49.179204, lng: -122.821221},
-        content: 'my'},
-      {name: "Capilano River Regional Park", place: {lat: 49.352239, lng: -123.114227},
-        content: 'name'},
-      {name: "Burnaby Fraser Foreshore Park", place: {lat: 49.194429, lng: -122.999024},
-        content: 'is'},
-      {name: "Campbell Valley Regional Park", place: {lat: 49.030394, lng: -122.669163},
-        content: 'John'},
-      {name: "Some house", place: {lat: 49.056469, lng: -122.775932},
-        content: '<iframe src="https://player.vimeo.com/video/71590595?title=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/71590595">16155, 30th avenue | South Surrey BC</a> from <a href="https://vimeo.com/liftmarketing">Lift Marketing</a> on <a href="https://vimeo.com">Vimeo</a>.</p>'}
-    ]
+var locationData = [
+  {
+    locationName: 'Tynehead Regional Park',
+    latLng: {lat: 49.181365, lng: -122.757452},
+    lat: 49.181365, lng: -122.757452
   },
-  // Assigned var parks to viewModel.park to make it easier to read
-  parks = viewModel.park;
+  
+  {
+    locationName: 'Green Timbers Lake',
+    latLng: {lat: 49.179204, lng: -122.821221},
+    lat: 49.179204, lng: -122.821221
+  },
+  
+  {
+    locationName: 'Capilano River Regional Park',
+    latLng: {lat: 49.352239, lng: -123.114227},
+    lat: 49.352239, lng: -123.114227
+  },
 
-  // Initializes the map
-  function initialize() {
-    // Set the zoom level and center position of map
-    var mapOptions = {
-      zoom: 10,
-      center: new google.maps.LatLng(49.179282, -122.820615)
+  {
+    locationName: 'Burnaby Fraser Foreshore Park',
+    latLng: {lat: 49.194429, lng: -122.999024},
+    lat: 49.194429, lng: -122.999024
+  },
+  {
+    locationName: 'Campbell Valley Regional Park',
+    latLng: {lat: 49.030394, lng: -122.669163},
+    lat: 49.030394, lng: -122.669163
+  }
+
+];
+
+
+var ViewModel = function() {
+  var self = this;
+  
+  // Create a google map with id, center position and zoom level
+  self.googleMap = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: locationData[1].lat, lng: locationData[1].lng},
+    zoom: 10
+  });
+  
+  // Array to store all date
+  self.allPlaces = [];
+
+  // For each index of locationData array push a 
+  // new Place object with the contents of the array
+  locationData.forEach(function(place) {
+    self.allPlaces.push(new Place(place));
+  });
+  
+  // Toggle visibility of list view in mobile view
+  self.showRow = ko.observable(false);
+  
+  // Makes the list disappear to make room for viewing
+  self.toggleVisibility = function() {
+    self.showRow(!self.showRow());
+  };
+  self.showRow = ko.observable(true);
+
+
+
+  // Some variables to be used for the Foursuare api
+  var latlng = '';
+  var client_id = 'K1GIWTMS14PAA20PHUZXAFQMGJRIXM0FYTXUIC3AEEEF3QXT';
+  var client_secret = 'GB3U3CIDFVZRDOFR1SU5AY3KYYYLAGC2WI1QMUZNS5AU0PEU';
+  var fUrl = 'https://api.foursquare.com/v2/venues/search?ll='+ latlng +'&client_id='+ client_id +'&client_secret='+ client_secret +'&v=20151259&m=foursquare&links';
+  var fquery = 'coffee';
+  var lat;
+  var lng;
+  var infowindow = new google.maps.InfoWindow();
+  
+  // This goes through each object in allPlaces and does
+
+  self.allPlaces.forEach(function(place, i) {
+    lat = place.lat;
+    lng = place.lng;
+    var drop = google.maps.Animation.DROP;
+    var markerOptions = {
+      map: self.googleMap,
+      position: place.latLng
     };
-    // Assign var map to a new google map and assigned to id 'map'
-    map = new google.maps.Map(document.getElementById('map'), mapOptions);
-  // Call markers function to load the map markers
-  markers();
-}
-// Load the Map
-google.maps.event.addDomListener(window, 'load', initialize);
+    var contentin = '';
 
-// Function to return string if it starts
-// with what has been entered by the user
-ko.utils.stringStartsWith = function(string, startsWith) {
-    string = string || "";
-    if (startsWith.length > string.length) return false;
-    return string.substring(0, startsWith.length) === startsWith;
-};
-
-// Stores the data of name and place.
-var Record = function(name, place) {
-    this.name = name;
-    this.place = place;
-};
-
-// Function that implements map markers.
-var markers = function() {
-    for(var i = 0; i < 6; i++){
-      var place = parks[i].place;
-      var drop = google.maps.Animation.DROP;
-      var name = parks[i].name;
-      marker = new google.maps.Marker({
-        position: place,
-        map: map,
-        animation: drop,
-        title: name
+    // Send request to foursquare 
+    $.getJSON('https://api.foursquare.com/v2/venues/search?ll='+ lat+','+lng +'&query='+ fquery +'&limit=1&client_id='+ client_id +'&client_secret='+ client_secret +'&v=20151259&m=foursquare',
+    
+    // Function to process data
+    function(data) {
+      $.each(data.response.venues, function(i,venues){
+        if(venues.name.length == 0){
+          content = '<p>' + 'Error loading foursquare' + '</p>';
+        }else
+        content = '</h5><br><p><sup>nearest coffee spot</sup></p><br>' +
+        '<h5>'+ venues.name + '</h5>' +
+        '<p>'+ venues.location.formattedAddress[0] +'<br>'
+        + venues.location.formattedAddress[1] +'</p>';
+        contentin = content;
       });
-      // Assign each marker to as markerd array for
-      // later access.
-      markerd[i] = marker;
+    });
 
-    // Behaviours when clicked
-    var infowindow = new google.maps.InfoWindow();
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        return function() {
-          infowindow.setContent(parks[i].content);
-          infowindow.open(map, marker);
+    var contentName = '<h4>'+locationData[i].locationName+'</h4><br>';
+    
+    place.marker = new google.maps.Marker(markerOptions);
+    var marker = place.marker;
 
-          if (marker.getAnimation() !== null) {
+    // Visual attribution
+    var poweredBy = '<img class="powered" src="img/powered.png">';
+    
+    // Add click listener and pass in 
+    // some content prepared earlier.
+    // returns infowindow containing content
+    // and animates the marker.
+    google.maps.event.addListener(marker, 'click', (function(marker) {
+    
+      return function() {
+
+        infowindow.setContent(contentName + contentin + poweredBy);
+        infowindow.open(self.googleMap, marker);
+        
+        if (marker.getAnimation() !== null) {
             marker.setAnimation(null);
           } else {
           marker.setAnimation(google.maps.Animation.BOUNCE);
           }
-          setTimeout(function(){ marker.setAnimation(null); }, 750);
-        }
-      })(marker, i)); // IIFE
-
-    }};
-
-// Function that contains Knockout code
-var ViewModel = function(records) {
-  // Turns markerd to an observable array
-  markerd = ko.observableArray([]);
-
-  var self = this;
-  // records is an observable array that creates a new Record object
-  self.records = ko.observableArray(
-  ko.utils.arrayMap(records, function(i) {
-    return new Record(i.name, i.place);
-  }));
-
-  // nameSearch aka filter is observable
-  self.nameSearch = ko.observable('');
-  // Computes the contents of foreach: parks in the html
-  // based on what is observed within nameSearch,
-  // it will call the ko.utils.stringStartsWith function
-  // pass in the records name and the observed nameSearch,
-  // both in lowerCase.
-  self.parks = ko.computed(function() {
-    return ko.utils.arrayFilter(self.records(), function(r) {
-    return (self.nameSearch().length == 0 || ko.utils.stringStartsWith(r.name.toLowerCase(), self.nameSearch().toLowerCase()))
-    });
-  });
-
-  // Click function that triggers the map marker
-  // from the list of names.
-  clicker = function(){
-    for(var i = 0; i < 6; i++){
-      if(this.name === parks[i].name){
-        google.maps.event.trigger(markerd[i], 'click');
-        // Triggers the toggle to close navbar list
-        // in the mobile dimensions
-        $( ".navbar-toggle" ).trigger( "click" );
+          setTimeout(function(){ marker.setAnimation(null); }, 800);
       }
+    })(marker));
+
+    // You might also add listeners onto the marker, such as "click" listeners.
+    clicker = function(){
+      google.maps.event.trigger(this.marker, 'click');
+      $('.toggle').trigger('click');
     }
+  });
+ 
+
+  // This array will contain what its name implies: only the markers that should
+  // be visible based on user input. My solution does not need to use an 
+  // observableArray for this purpose, but other solutions may require that.
+  self.visiblePlaces = ko.observableArray();
+
+  // All places should be visible at first. We only want to remove them if the
+  // user enters some input which would filter some of them out.
+  self.allPlaces.forEach(function(place) {
+    self.visiblePlaces.push(place);
+  });
+  
+  
+  // This, along with the data-bind on the <input> element, lets KO keep 
+  // constant awareness of what the user has entered. It stores the user's 
+  // input at all times.
+  self.userInput = ko.observable('');
+  
+  
+  // The filter will look at the names of the places the Markers are standing
+  // for, and look at the user input in the search box. If the user input string
+  // can be found in the place name, then the place is allowed to remain 
+  // visible. All other markers are removed.
+  self.filterMarkers = function() {
+    var searchInput = self.userInput().toLowerCase();
+    
+    self.visiblePlaces.removeAll();
+    
+    // Looks at each name and checks if user input is true
+    self.allPlaces.forEach(function(place) {
+      place.marker.setVisible(false);
+      
+      if (place.locationName.toLowerCase().indexOf(searchInput) !== -1) {
+        self.visiblePlaces.push(place);
+      }
+    });
+    self.visiblePlaces().forEach(function(place) {
+      place.marker.setVisible(true);
+    });
   };
 
-
-};
-
-//variable for wikipedia api
-var wikiUrl = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=';
-var wikiCall = '&format=json&callback=wikiCallback';
-var wikiUrlist = [];
-var wikiSpot = [
-  'surrey_bc', 'green_timbers_lake', 'capilano_river', 'Burnaby', 'fort_langley'
-];
-var wikiarticleArray = [];
-var wikiRequestTimeout = setTimeout(function(){
-  $wikiElem.text("failed to get wikipedia resources");
-}, 8000);
-
-for(var i = 0; i < 5; i++){
-  wikiUrlist.push(wikiUrl + wikiSpot[i] + wikiCall);
-  console.log(wikiUrlist[i]);
+  // Objects to be references by map markers
+  function Place(dataObj) {
+    this.locationName = dataObj.locationName;
+    this.latLng = dataObj.latLng;
+    this.lat = dataObj.lat;
+    this.lng = dataObj.lng;
+    this.marker = null;
+  }
 };
 
 
-
-  // Variables for the wikipedia api
-var $wikiElem = $('#wikipedia-links');
-$wikiElem.text("");
-var wikiUrl = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + wikiSpot[2] +'&format=json&callback=wikiCallback';
-var wurl = [];
-var articleList;
-for(var i = 0; i < 5; i++){
-  $.ajax({
-    url: wikiUrlist[i],
-    dataType: "jsonp",
-    jsonp: "callback",
-    success: function( response ){
-      articleList = response[1];
-      console.log(response)
-      for (var i = 0; i < articleList.length; i++){
-        articleStr = articleList[i];
-        var url = 'http://en.wikipedia.org/wiki/' + articleStr;
-        $wikiElem.append('<li><a href="'+ url +'">' + articleStr + '</a></li>');
-      };
-       // My intention is to
-       // push an article from wikipedia into
-       // an array that can be passed into an
-       // infowindow that corresponds with the article.
-
-       // Could use a push in the right direction:)
-
-
-        wikiarticleArray.push(wurl);
-
-        console.log(wikiarticleArray);
-
-
-      clearTimeout(wikiRequestTimeout);
-    }
-  });
-}
-
-// this is need for the toggling of the sidebar nav in mobile
-$(document).ready(function() {
-  $('[data-toggle=offcanvas]').click(function() {
-    $('.row-offcanvas').toggleClass('active');
-  });
-});
-
-ko.applyBindings(new ViewModel(parks));
+ko.applyBindings(new ViewModel());
