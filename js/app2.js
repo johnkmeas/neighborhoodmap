@@ -30,14 +30,19 @@ var locationData = [
 
 ];
 
-var KoViewModel = function() {
-  var self = this;
-
-  // Create a google map with id, center position and zoom level
-  self.googleMap = new google.maps.Map(document.getElementById('map'), {
+// Here is the function that loads the map.
+// It is intended to load asynchronisly
+function initMap(){
+    // Create a google map with id, center position and zoom level
+  map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: locationData[3].lat, lng: locationData[3].lng},
     zoom: 9
   });
+}
+
+var KoViewModel = function() {
+  var self = this;
+  self.googleMap = map;
 
   // An empty array to store a Place.
   self.allPlaces = [];
@@ -75,19 +80,18 @@ var KoViewModel = function() {
     // This function takes the foursquare data and processes it.
     function(data) {
       $.each(data.response.venues, function(i,venues){
-        if(venues.name.length == 0){
-          content = '<p>' + 'Error loading foursquare' + '</p>';
-        } else {
-          content = '</h5><br><p><sup>nearest coffee spot</sup></p><br>' +
+          content = '<hr></h5><p><sup>nearest coffee spot</sup></p>' +
           '<h5>'+ venues.name + '</h5>' +
-          '<p>'+ venues.location.formattedAddress[0] +'<br>'
-          + venues.location.formattedAddress[1] +'</p>';
+          '<p>'+ venues.location.formattedAddress[0] +'<br>' + 
+          venues.location.formattedAddress[1] +'</p>';
           contentin = content;
-        }
       });
+    }).fail(function(){
+        content = 'There was an error loading foursquare';
+        contentin = content;
     });
 
-    var contentName = '<h4>'+locationData[i].locationName+'</h4><br>';
+    var contentName = '<h4>'+locationData[i].locationName+'</h4>';
     place.marker = new google.maps.Marker(markerOptions);
     var marker = place.marker;
     var poweredBy = '<img class="powered" src="img/powered.png">';
@@ -106,7 +110,7 @@ var KoViewModel = function() {
           marker.setAnimation(google.maps.Animation.BOUNCE);
           }
           setTimeout(function(){ marker.setAnimation(null); }, 800);
-      }
+      };
     })(marker));
   });
 
@@ -115,7 +119,7 @@ var KoViewModel = function() {
   // list itemsd.
   clicker = function(){
     google.maps.event.trigger(this.marker, 'click');
-    $('.toggle').trigger('click');
+    $('#menu-toggle').trigger('click');
   };
 
   // Toggle visibility of list view in mobile view
@@ -159,13 +163,16 @@ var KoViewModel = function() {
   };
 
   //This creates object Place with data
-  function Place(dataObj) {
-    this.locationName = dataObj.locationName;
-    this.latLng = dataObj.latLng;
-    this.lat = dataObj.lat;
-    this.lng = dataObj.lng;
+  function Place(data) {
+    this.locationName = data.locationName;
+    this.latLng = data.latLng;
+    this.lat = data.lat;
+    this.lng = data.lng;
     this.marker = null;
   }
 };
 
-ko.applyBindings(new KoViewModel());
+function loadAll(){
+  initMap();
+  ko.applyBindings(new KoViewModel());
+}
