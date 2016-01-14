@@ -1,6 +1,6 @@
 # Neightborhood Map
 
-This is the my first application built from scratch using KnockoutJS. It loads a google map and custom map markers generated from location data. The markers animate and reveal an info window when clicked. The info windows displays the name of the park and details of the nearest coffee shop.
+This is the my first application built from scratch using KnockoutJS. It loads a google map and custom map markers generated from location data. The markers animate and reveal an info window when clicked. The info windows display the name of the park and details of the nearest coffee shop.
 
 ### How to run applications
 #### Download repository
@@ -10,7 +10,7 @@ In terminal run `git clone https://github.com/johnkmeas/neighborhoodmap.git`
 Open index.html in browser
 
 ## KnockoutJs
-Allows the UI to update dynamically. I was able to filter the list and associated markers with the input filter.
+KnockoutJs is a javascript library that allows the UI to update dynamically. I was able to filter the list and associated markers with the input filter.
 
 ## Foursquare Api
 Sent request to Foursquare and received Json data for each location. I used the data to populate each info window.
