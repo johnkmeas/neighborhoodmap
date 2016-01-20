@@ -1,0 +1,28 @@
+{
+  "name": "neighborhood-map",
+  "version": "1.0.0",
+  "description": "This is the my first application built from scratch using KnockoutJS. It loads a google map and custom map markers generated from location data. The markers animate and reveal an info window when clicked. The info windows display the name of the park and details of the nearest coffee shop.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnkmeas/neighborhoodmap.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnkmeas/neighborhoodmap/issues"
+  },
+  "homepage": "https://github.com/johnkmeas/neighborhoodmap#readme",
+  "dependencies": {
+    "grunt": "^0.4.5"
+  },
+  "devDependencies": {
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-cssmin": "^0.14.0",
+    "grunt-contrib-uglify": "^0.11.0",
+    "grunt-contrib-watch": "^0.6.1"
+  }
+}

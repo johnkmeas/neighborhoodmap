@@ -7,15 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scaleable=no">
   <link href="//normalize-css.googlecode.com/svn/trunk/normalize.css" property="stylesheet">
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" property="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="dist/style.min.css">
 </head>
 <body>
   <!-- Fixed Top Navigation -->
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="navbar-header">
-      <a href="#menu-toggle" class="btn btn-default glyphicon glyphicon-menu-hamburger white" id="menu-toggle"></a>     
+      <a href="#menu-toggle" class="btn btn-default glyphicon glyphicon-menu-hamburger white" id="menu-toggle"></a>
       <input class="filter" type="search" placeholder="keyword search..." data-bind="textInput: userInput, event: {keyup: filterMarkers}">
-      <h4 class="titletext">Places to walk the dog</h4>      
+      <h4 class="titletext">Places to walk the dog</h4>
     </div>
   </nav>
 
@@ -34,9 +34,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script async type="text/javascript" src="https://maps.googleapis.com/maps/api/js?callback=loadAll" onerror="googleError()">
     </script>
-  <script src="js/knockout.js"></script>
-  <script src="js/app2.js"></script>
-  
+  <script src="dist/js.min.js"></script>
+
   <!-- Menu Toggle Script -->
   <script>
     $("#menu-toggle").click(function(e) {
@@ -44,5 +43,5 @@
       $("#wrapper").toggleClass("toggled");
     });
   </script>
-  
+
 </html>
