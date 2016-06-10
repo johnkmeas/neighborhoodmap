@@ -1,17 +1,25 @@
 html,
 body {
-  background-color: black;
+  background-color: #A2C0C0;
   height: 100%;
   margin-top: 0;
   padding: 7px;
 }
 
-
-.titletext {
+.title-img .titletext {
+  display: inline-block;
   padding-top: 10px;
   padding-left: 20px;
   color: #CCCCCE;
-  float: clear;
+}
+
+.title-img img {
+  float:right;
+  margin-left: 10px;
+  max-width: 100px;
+  height: auto;
+  background: #8FACAC;
+  border-radius: 50%;
 }
 
 
@@ -26,7 +34,7 @@ body {
 
 
 input {
-  float: right;
+  float: left;
   margin-left: 30px;
   margin-right: 40px;
   margin-top: 10px;
@@ -39,7 +47,7 @@ input {
 
 
 ul li:first-child{
-  padding-top: 100px;
+  padding-top: 150px;
 }
 
 
@@ -69,7 +77,7 @@ li {
 
 
 .navbar {
-  background: black;
+  background: #283030;
 }
 
 
@@ -83,6 +91,7 @@ li {
 
 
 #menu-toggle {
+  float:left;
   z-index: 100;
 }
 
@@ -107,9 +116,10 @@ li {
   left: 250px;
   width: 0;
   height: 100%;
+  margin-top: 70px;
   margin-left: -250px;
   overflow-y: auto;
-  background: #000;
+  background: #3D4949;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
@@ -157,7 +167,7 @@ li {
 .sidebar-nav li a {
   display: block;
   text-decoration: none;
-  color: #999999;
+  color: #DFDFDF;
 }
 
 
