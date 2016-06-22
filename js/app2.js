@@ -116,11 +116,19 @@ var KoViewModel = function() {
 
   // The click function triggers map markers
   // and clicks the toggle that shows the
-  // list itemsd.
+  // list items.
   clicker = function(){
     google.maps.event.trigger(this.marker, 'click');
     $('#menu-toggle').trigger('click');
   };
+
+  // Triggers the menu toggle on keypress "enter"
+  $(document).keypress(function(e) {
+    if(e.which == 13) {
+  $('#menu-toggle').trigger('click');
+    }
+  });
+ 
 
   // Toggle visibility of list view in mobile view
   self.Show = ko.observable(false);
