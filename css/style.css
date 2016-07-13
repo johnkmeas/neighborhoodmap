@@ -24,7 +24,7 @@ body {
 
 
 #map {
-  margin-top: 10%;
+  margin-top: 10vh;
   margin-right: 2%;
   position: fixed;
   float: right;
@@ -64,7 +64,7 @@ li {
 
 @media only screen and (max-width: 480px){
     #map {
-      margin-top: 20%;
+      margin-top: 30vh;
       position: fixed;
       float: right;
       width: 100%;

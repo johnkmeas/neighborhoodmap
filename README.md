@@ -3,7 +3,7 @@
 This is the my first application built from scratch using KnockoutJS. It loads a google map and custom map markers generated from location data. The markers animate and reveal an info window when clicked. The info windows display the name of the park and details of the nearest coffee shop.
 
 ### How to run applications
-#### Download repository
+#### Clone repository
 In terminal run `git clone https://github.com/johnkmeas/neighborhoodmap.git`
 
 #### Run in Browser
